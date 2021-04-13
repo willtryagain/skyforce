@@ -18,7 +18,7 @@
 
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.setClearColor(0x87ceeb, 1.0);
+			// renderer.setClearColor(0xFF7F50, 1.0);
 			document.body.appendChild( renderer.domElement );
 
 			//Load background texture
@@ -60,7 +60,7 @@
 			camera.position.z = 5;
 
 			var weapon = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 5), new THREE.MeshBasicMaterial({
-			color: 0x5555ff
+			color: 0xFFFF00 
 			}));
 			weapon.position.set(2, -1, -2.5);
 			camera.add(weapon);
@@ -82,6 +82,7 @@
 			setupKeyControls();
 			function setupKeyControls() {
 				document.onkeydown = function (e) {
+
 					if (e.keyCode == 37) 
 						scene.children[1].position.x -= 0.2;
 					if (e.keyCode == 38) 
@@ -92,7 +93,7 @@
 						scene.children[1].position.y -= 0.2;	
 					if (e.keyCode == 32) {
 						let plasmaBall = new THREE.Mesh(new THREE.SphereGeometry(0.2, 0.2, 0.2), new THREE.MeshBasicMaterial({
-								color: 0xb22222
+								color: 0xFFFF00
 							}));
 							plasmaBall.position.copy(scene.children[1].position); // start position - the tip of the weapon
 							plasmaBall.quaternion.copy(camera.quaternion); // apply camera's quaternion
@@ -107,10 +108,42 @@
 			// var ambientLight = new THREE.AmbientLight(0x3c3c3c);
     		// scene.add(ambientLight);
 
-			var spotLight = new THREE.SpotLight(0xffffff, 1.2, 150, 120);
-			spotLight.position.set(0, 0, 10);
-			// spotLight.castShadow = true;
-			scene.add(spotLight);
+			// var spotLight = new THREE.SpotLight(0xffffff, 1.2, 150, 120);
+			// spotLight.position.set(0, 0, 10);
+			// // spotLight.castShadow = true;
+			// scene.add(spotLight);
+
+			var light = new THREE.PointLight(0xffffff, 1, Infinity);
+			scene.add(light);
+
+
+	
+
+		// earth
+
+		const tloader = new THREE.TextureLoader();
+
+		// load a resource
+		tloader.load(
+			// resource URL
+			'bg.jpg',
+
+			// onLoad callback
+			function ( texture ) {
+				// in this example we create the material when the texture is loaded
+				const material = new THREE.MeshBasicMaterial( {
+					map: texture
+				} );
+			},
+
+			// onProgress callback currently not supported
+			undefined,
+
+			// onError callback
+			function ( err ) {
+				console.error( 'An error happened.' );
+			}
+);
 
 
 			const animate = function () {
